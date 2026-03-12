@@ -93,7 +93,7 @@ AgroMart/
 
 ### 1️⃣ Clone the Repository
 ```bash
-git clone https://github.com/YOUR_USERNAME/AgroMart.git
+git clone https://github.com/Yuvaraj-varma/AgroMart.git
 cd AgroMart
 ```
 
@@ -269,10 +269,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👨‍💻 Author
 
-**Yuvaraj**
+**Yuvaraj Varma**
 
-- GitHub: [@YourGitHubUsername](https://github.com/YourGitHubUsername)
-- LinkedIn: [Your LinkedIn](https://linkedin.com/in/yourprofile)
+- GitHub: [@Yuvaraj-varma](https://github.com/Yuvaraj-varma)
+- LinkedIn: [Connect with me](https://linkedin.com/in/yuvaraj-varma)
 
 ---
 
