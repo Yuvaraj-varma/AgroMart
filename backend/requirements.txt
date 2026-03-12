@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+sqlalchemy
+pydantic
+python-dotenv
+passlib[bcrypt]
+python-jose
+kafka-python>=2.0.2
+psycopg2-binary
