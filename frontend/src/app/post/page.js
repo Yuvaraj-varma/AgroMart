@@ -5,33 +5,38 @@ import { API_URL } from "../../lib/api";
 
 export default function PostProductPage() {
   const [formData, setFormData] = useState({
-    name: "",
-    category: "", // ✅ seeds / fertilizers / crops
-    type: "",
-    price: "",
-    description: "",
-    image: null,
-    farmer_name: "",
-    location: "",
+    name: "", category: "", type: "", price: "",
+    description: "", image: null, farmer_name: "", location: "",
   });
-
   const [preview, setPreview] = useState(null);
+  const [errors, setErrors] = useState({});
 
-  // ✅ Handle input changes
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-
     if (files && files[0]) {
       setFormData({ ...formData, [name]: files[0] });
-      setPreview(URL.createObjectURL(files[0])); // 👀 Preview image
+      setPreview(URL.createObjectURL(files[0]));
     } else {
       setFormData({ ...formData, [name]: value });
     }
   };
 
-  // ✅ Handle form submission
+  function validate() {
+    const errs = {};
+    if (formData.name.trim().length < 2)        errs.name        = "Name must be at least 2 characters";
+    if (!formData.category)                     errs.category    = "Please select a category";
+    if (!formData.price || Number(formData.price) <= 0) errs.price = "Price must be greater than 0";
+    if (formData.description.trim().length < 5) errs.description = "Description must be at least 5 characters";
+    if (formData.farmer_name.trim().length < 2) errs.farmer_name = "Farmer name must be at least 2 characters";
+    if (formData.location.trim().length < 2)    errs.location    = "Location must be at least 2 characters";
+    return errs;
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const errs = validate();
+    if (Object.keys(errs).length > 0) { setErrors(errs); return; }
+    setErrors({});
 
     try {
       const data = new FormData();
@@ -93,32 +98,22 @@ export default function PostProductPage() {
         {/* Product Name */}
         <label className="block mb-3">
           <span className="text-green-700 font-medium">Product Name</span>
-          <input
-            name="name"
-            type="text"
-            required
-            value={formData.name}
-            onChange={handleChange}
-            className="w-full mt-1 p-2 border rounded-md"
-            placeholder="Enter product name"
-          />
+          <input name="name" type="text" required value={formData.name} onChange={handleChange}
+            className="w-full mt-1 p-2 border rounded-md" placeholder="Enter product name" />
+          {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
         </label>
 
         {/* Category Dropdown */}
         <label className="block mb-3">
           <span className="text-green-700 font-medium">Category</span>
-          <select
-            name="category"
-            required
-            value={formData.category}
-            onChange={handleChange}
-            className="w-full mt-1 p-2 border rounded-md"
-          >
+          <select name="category" required value={formData.category} onChange={handleChange}
+            className="w-full mt-1 p-2 border rounded-md">
             <option value="">Select Category</option>
             <option value="crops">Crop</option>
             <option value="seeds">Seed</option>
             <option value="fertilizers">Fertilizer</option>
           </select>
+          {errors.category && <p className="text-red-500 text-sm">{errors.category}</p>}
         </label>
 
         {/* Type */}
@@ -137,56 +132,33 @@ export default function PostProductPage() {
         {/* Price */}
         <label className="block mb-3">
           <span className="text-green-700 font-medium">Price (₹)</span>
-          <input
-            name="price"
-            type="number"
-            required
-            value={formData.price}
-            onChange={handleChange}
-            className="w-full mt-1 p-2 border rounded-md"
-            placeholder="e.g., 250"
-          />
+          <input name="price" type="number" min="1" required value={formData.price} onChange={handleChange}
+            className="w-full mt-1 p-2 border rounded-md" placeholder="e.g., 250" />
+          {errors.price && <p className="text-red-500 text-sm">{errors.price}</p>}
         </label>
 
         {/* Description */}
         <label className="block mb-3">
           <span className="text-green-700 font-medium">Description</span>
-          <textarea
-            name="description"
-            required
-            value={formData.description}
-            onChange={handleChange}
-            className="w-full mt-1 p-2 border rounded-md"
-            placeholder="Write a short description"
-          />
+          <textarea name="description" required value={formData.description} onChange={handleChange}
+            className="w-full mt-1 p-2 border rounded-md" placeholder="Write a short description" />
+          {errors.description && <p className="text-red-500 text-sm">{errors.description}</p>}
         </label>
 
         {/* ✅ Farmer Name */}
         <label className="block mb-3">
           <span className="text-green-700 font-medium">Farmer Name</span>
-          <input
-            name="farmer_name"
-            type="text"
-            required
-            value={formData.farmer_name}
-            onChange={handleChange}
-            className="w-full mt-1 p-2 border rounded-md"
-            placeholder="Enter your name"
-          />
+          <input name="farmer_name" type="text" required value={formData.farmer_name} onChange={handleChange}
+            className="w-full mt-1 p-2 border rounded-md" placeholder="Enter your name" />
+          {errors.farmer_name && <p className="text-red-500 text-sm">{errors.farmer_name}</p>}
         </label>
 
         {/* ✅ Location */}
         <label className="block mb-3">
           <span className="text-green-700 font-medium">Location</span>
-          <input
-            name="location"
-            type="text"
-            required
-            value={formData.location}
-            onChange={handleChange}
-            className="w-full mt-1 p-2 border rounded-md"
-            placeholder="Enter your location (e.g., Chennai, TN)"
-          />
+          <input name="location" type="text" required value={formData.location} onChange={handleChange}
+            className="w-full mt-1 p-2 border rounded-md" placeholder="Enter your location (e.g., Chennai, TN)" />
+          {errors.location && <p className="text-red-500 text-sm">{errors.location}</p>}
         </label>
 
         {/* Upload Image */}

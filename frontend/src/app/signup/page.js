@@ -9,10 +9,22 @@ export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("buyer");
+  const [errors, setErrors] = useState({});
   const router = useRouter();
+
+  function validate() {
+    const errs = {};
+    if (name.trim().length < 2)   errs.name     = "Name must be at least 2 characters";
+    if (!email.includes("@"))     errs.email    = "Enter a valid email address";
+    if (password.length < 6)      errs.password = "Password must be at least 6 characters";
+    return errs;
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
+    const errs = validate();
+    if (Object.keys(errs).length > 0) { setErrors(errs); return; }
+    setErrors({});
 
     try {
       const res = await fetch(`${API_URL}/api/auth/signup`, {
@@ -82,27 +94,30 @@ export default function SignupPage() {
           placeholder="Full Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full mb-4 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+          className="w-full mb-1 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
           required
         />
+        {errors.name && <p className="text-red-500 text-sm mb-3">{errors.name}</p>}
 
         <input
           placeholder="Email Address"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full mb-4 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+          className="w-full mb-1 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
           required
         />
+        {errors.email && <p className="text-red-500 text-sm mb-3">{errors.email}</p>}
 
         <input
-          placeholder="Password"
+          placeholder="Password (min 6 characters)"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full mb-4 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+          className="w-full mb-1 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
           required
         />
+        {errors.password && <p className="text-red-500 text-sm mb-3">{errors.password}</p>}
 
         <select
           value={role}
