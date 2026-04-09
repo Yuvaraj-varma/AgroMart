@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from app.models.fertilizer_model import Fertilizer
+from app.db.models.fertilizer_model import Fertilizer
 from app.schemas.fertilizer_schema import FertilizerCreate
 
 def create_fertilizer(db: Session, fertilizer: FertilizerCreate, image_url: str = None):

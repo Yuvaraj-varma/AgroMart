@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
 from sqlalchemy.orm import Session
-from app.database import get_db
+from app.db.postgres_session import get_db
 from app.schemas.fertilizer_schema import FertilizerResponse
 from app.services import fertilizer_service
 

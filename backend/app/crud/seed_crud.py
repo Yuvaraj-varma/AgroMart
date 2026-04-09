@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from app.models.seed_model import Seed
+from app.db.models.seed_model import Seed
 from app.schemas.seed_schema import SeedCreate
 
 # ➕ Create seed

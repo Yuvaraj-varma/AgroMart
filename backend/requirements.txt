@@ -12,3 +12,6 @@ pymongo
 requests
 apscheduler
 pytz
+pytest
+httpx
+pytest-asyncio
