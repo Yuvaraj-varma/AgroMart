@@ -3,8 +3,8 @@ from app.db.models.crop_model import Crop
 from app.schemas.crop_schema import CropCreate
 
 
-def create_crop(db: Session, crop: CropCreate, image_url: str = None):
-    new_crop = Crop(**crop.model_dump(), image_url=image_url)
+def create_crop(db: Session, crop: CropCreate, image_url: str = None, vendor_id: int = None):
+    new_crop = Crop(**crop.model_dump(), image_url=image_url, vendor_id=vendor_id)
     db.add(new_crop)
     db.commit()
     db.refresh(new_crop)
@@ -13,6 +13,10 @@ def create_crop(db: Session, crop: CropCreate, image_url: str = None):
 
 def get_all_crops(db: Session):
     return db.query(Crop).all()
+
+
+def get_crops_by_vendor(db: Session, vendor_id: int):
+    return db.query(Crop).filter(Crop.vendor_id == vendor_id).all()
 
 
 def get_crop_by_id(db: Session, crop_id: int):

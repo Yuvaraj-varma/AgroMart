@@ -70,9 +70,10 @@ export default function HomePage() {
 
           {/* ✅ Only show Post Product if Vendor */}
           {userRole === "vendor" && (
-            <Link href="/post" className="hover:underline">
-              Post Product
-            </Link>
+            <>
+              <Link href="/post" className="hover:underline">Post Product</Link>
+              <Link href="/vendor-dashboard" className="hover:underline">My Products</Link>
+            </>
           )}
 
           <Link

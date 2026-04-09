@@ -38,6 +38,7 @@ class SeedCreate(SeedBase):
 class SeedResponse(SeedBase):
     id: int
     image_url: Optional[str] = None
+    vendor_id: Optional[int] = None
 
     class Config:
         from_attributes = True

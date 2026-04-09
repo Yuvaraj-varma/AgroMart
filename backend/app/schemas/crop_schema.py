@@ -38,6 +38,7 @@ class CropCreate(CropBase):
 class CropResponse(CropBase):
     id: int
     image_url: Optional[str] = None
+    vendor_id: Optional[int] = None
 
     class Config:
         from_attributes = True

@@ -38,6 +38,7 @@ class FertilizerCreate(FertilizerBase):
 class FertilizerResponse(FertilizerBase):
     id: int
     image_url: Optional[str] = None
+    vendor_id: Optional[int] = None
 
     class Config:
         from_attributes = True

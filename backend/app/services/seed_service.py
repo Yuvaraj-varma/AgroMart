@@ -18,13 +18,13 @@ def save_image(image: UploadFile) -> str:
 
 def create_seed(db: Session, name: str, type: str, price: float,
                 description: str, farmer_name: str, location: str,
-                image: UploadFile = None):
+                image: UploadFile = None, vendor_id: int = None):
     image_url = save_image(image) if image else None
     data = SeedCreate(name=name, type=type, price=price,
                       description=description,
                       farmer_name=farmer_name or "",
                       location=location or "")
-    return seed_crud.create_seed(db, data, image_url)
+    return seed_crud.create_seed(db, data, image_url, vendor_id)
 
 
 def get_all_seeds(db: Session):

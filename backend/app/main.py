@@ -13,6 +13,7 @@ from app.routers import (
     product_router,
     live_rates_router,
     order_router,
+    vendor_router,
 )
 
 # ✅ Create all DB tables on startup
@@ -43,6 +44,7 @@ app.include_router(auth_router.router,        prefix="/api/auth",        tags=["
 app.include_router(product_router.router,     prefix="/api/products",    tags=["Products"])
 app.include_router(live_rates_router.router,  prefix="/api/live-rates",  tags=["Live Rates"])
 app.include_router(order_router.router,       prefix="/api/orders",      tags=["Orders"])
+app.include_router(vendor_router.router,       prefix="/api/vendor",      tags=["Vendor Dashboard"])
 
 
 @app.get("/", tags=["Root"])

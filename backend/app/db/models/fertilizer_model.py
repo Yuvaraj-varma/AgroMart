@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, Text
+from sqlalchemy import Column, Integer, String, Float, Text, ForeignKey
 from app.db.postgres_session import Base
 
 
@@ -13,3 +13,4 @@ class Fertilizer(Base):
     image_url = Column(Text, nullable=True)
     farmer_name = Column(String(100), nullable=False)
     location = Column(String(100), nullable=False)
+    vendor_id = Column(Integer, ForeignKey("vendors.id", ondelete="SET NULL"), nullable=True)

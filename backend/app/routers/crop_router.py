@@ -1,10 +1,21 @@
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form, Security
 from sqlalchemy.orm import Session
 from app.db.postgres_session import get_db
 from app.schemas.crop_schema import CropResponse
 from app.services import crop_service
+from app.core.security import security, verify_token
 
 router = APIRouter(tags=["Crops"])
+
+
+def get_optional_vendor_id(credentials=Security(security, scopes=[])):
+    try:
+        payload = verify_token(credentials)
+        if payload.get("role") == "vendor":
+            return int(payload.get("sub"))
+    except Exception:
+        pass
+    return None
 
 
 @router.post("/", response_model=CropResponse)
@@ -16,9 +27,10 @@ def create_crop(
     farmer_name: str = Form(None),
     location: str = Form(None),
     image: UploadFile = File(None),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    vendor_id: int = Depends(get_optional_vendor_id)
 ):
-    return crop_service.create_crop(db, name, type, price, description, farmer_name, location, image)
+    return crop_service.create_crop(db, name, type, price, description, farmer_name, location, image, vendor_id)
 
 
 @router.get("/", response_model=list[CropResponse])
