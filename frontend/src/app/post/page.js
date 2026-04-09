@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { API_URL } from "../../lib/api";
 
@@ -10,6 +11,17 @@ export default function PostProductPage() {
   });
   const [preview, setPreview] = useState(null);
   const [errors, setErrors] = useState({});
+  const router = useRouter();
+
+  // ✅ Check if vendor is logged in
+  useEffect(() => {
+    const role = localStorage.getItem("role");
+    const token = localStorage.getItem("token");
+    if (!token || role !== "vendor") {
+      alert("⚠️ Only vendors can post products. Please login as a vendor.");
+      router.push("/login");
+    }
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -50,8 +62,10 @@ export default function PostProductPage() {
 
       const endpoint = formData.category || "crops";
 
+      const token = localStorage.getItem("token");
       const response = await fetch(`${API_URL}/api/${endpoint}/`, {
         method: "POST",
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
         body: data,
       });
 

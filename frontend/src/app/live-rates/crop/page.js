@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { API_URL } from "../../../lib/api";
 
 export default function LiveCropsPage() {
   const [rates, setRates] = useState([]);
@@ -9,7 +10,7 @@ export default function LiveCropsPage() {
   // ✅ Fetch latest crop rates from backend
   const fetchLiveRates = async () => {
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/live-rates/latest");
+      const res = await fetch(`${API_URL}/api/live-rates/latest`);
       const data = await res.json();
 
       // ✅ Only use crops data
