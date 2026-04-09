@@ -1,29 +1,39 @@
 "use client";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
 const CartContext = createContext();
 
 export function CartProvider({ children }) {
-  const [cartItems, setCartItems] = useState([]);
+  // ✅ Load cart from localStorage on first render
+  const [cartItems, setCartItems] = useState(() => {
+    if (typeof window === "undefined") return [];
+    try {
+      const stored = localStorage.getItem("cartItems");
+      return stored ? JSON.parse(stored) : [];
+    } catch {
+      return [];
+    }
+  });
 
-  // 🛒 Add to Cart with quantity and totalPrice support
+  // ✅ Save cart to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  }, [cartItems]);
+
+  // 🛒 Add to Cart
   const addToCart = (item) => {
     setCartItems((prevItems) => {
       const existingItem = prevItems.find(
         (i) => i.name === item.name && i.quantity === item.quantity
       );
-
       if (existingItem) {
-        // If same item + same quantity exists → increase total
         return prevItems.map((i) =>
           i.name === item.name && i.quantity === item.quantity
             ? { ...i, totalPrice: i.totalPrice + item.totalPrice }
             : i
         );
-      } else {
-        // Else add as new item
-        return [...prevItems, item];
       }
+      return [...prevItems, item];
     });
   };
 
@@ -33,9 +43,12 @@ export function CartProvider({ children }) {
   };
 
   // 🧹 Clear all items
-  const clearCart = () => setCartItems([]);
+  const clearCart = () => {
+    setCartItems([]);
+    localStorage.removeItem("cartItems");
+  };
 
-  // 💰 Calculate total amount (sum of totalPrice)
+  // 💰 Calculate total amount
   const totalAmount = cartItems.reduce(
     (sum, item) => sum + (item.totalPrice || item.price || 0),
     0
