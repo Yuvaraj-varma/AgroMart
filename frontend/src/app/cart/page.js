@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useCart } from "../../context/CartContext";
 import { API_URL } from "../../lib/api";
 
@@ -10,6 +11,7 @@ export default function CartPage() {
   const [paymentMethod, setPaymentMethod] = useState("");
   const [loading, setLoading] = useState(false);
   const [buyerName, setBuyerName] = useState("Guest Buyer");
+  const router = useRouter();
 
   // ✅ Get buyer name from localStorage (if logged in)
   useEffect(() => {
@@ -128,8 +130,8 @@ export default function CartPage() {
       const data = await res.json();
 
       if (res.ok) {
-        alert(`✅ Order placed successfully via ${paymentMethod}!`);
         clearCart();
+        router.push(`/order-success?order_id=${data.order_id}&payment=${encodeURIComponent(paymentMethod)}&total=${total}`);
       } else {
         const errMsg = data?.detail ?? data ?? "Server error";
         alert(`❌ Failed: ${JSON.stringify(errMsg)}`);
