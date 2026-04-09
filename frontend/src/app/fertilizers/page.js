@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useCart } from "../../context/CartContext";
+import { API_URL } from "../../lib/api";
 
 export default function FertilizersPage() {
   const { addToCart } = useCart();
@@ -15,7 +16,7 @@ export default function FertilizersPage() {
   useEffect(() => {
     const fetchFertilizers = async () => {
       try {
-        const res = await fetch("http://127.0.0.1:8000/api/fertilizers/");
+        const res = await fetch(`${API_URL}/api/fertilizers/`);
         if (!res.ok) throw new Error("Failed to fetch fertilizers");
         const data = await res.json();
 
@@ -27,7 +28,7 @@ export default function FertilizersPage() {
             f.description || "Certified fertilizer for healthy crop growth.",
           image_url: f.image_url?.startsWith("http")
             ? f.image_url
-            : `http://127.0.0.1:8000${f.image_url || "/uploads/default.jpg"}`,
+            : `${API_URL}${f.image_url || "/uploads/default.jpg"}`,
         }));
 
         setFertilizers(backendFertilizers);

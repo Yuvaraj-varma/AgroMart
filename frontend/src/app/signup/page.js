@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { API_URL } from "../../lib/api";
 
 export default function SignupPage() {
   const [name, setName] = useState("");
@@ -14,7 +15,7 @@ export default function SignupPage() {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/auth/signup", {
+      const res = await fetch(`${API_URL}/api/auth/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password, role }),
@@ -31,7 +32,7 @@ export default function SignupPage() {
       loginForm.append("username", email);
       loginForm.append("password", password);
 
-      const loginRes = await fetch("http://127.0.0.1:8000/api/auth/login", {
+      const loginRes = await fetch(`${API_URL}/api/auth/login`, {
         method: "POST",
         body: loginForm,
       });

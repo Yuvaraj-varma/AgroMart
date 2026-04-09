@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import { API_URL } from "../../lib/api";
 
 export default function PostProductPage() {
   const [formData, setFormData] = useState({
@@ -44,7 +45,7 @@ export default function PostProductPage() {
 
       const endpoint = formData.category || "crops";
 
-      const response = await fetch(`http://127.0.0.1:8000/api/${endpoint}/`, {
+      const response = await fetch(`${API_URL}/api/${endpoint}/`, {
         method: "POST",
         body: data,
       });

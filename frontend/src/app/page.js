@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { API_URL } from "../lib/api";
 
 export default function HomePage() {
   const [userRole, setUserRole] = useState(null);
@@ -14,7 +15,7 @@ export default function HomePage() {
       if (!token) return; // Not logged in
 
       try {
-        const res = await fetch("http://127.0.0.1:8000/api/auth/me", {
+        const res = await fetch(`${API_URL}/api/auth/me`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

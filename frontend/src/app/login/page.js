@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { API_URL } from "../../lib/api";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -16,7 +17,7 @@ export default function LoginPage() {
     formData.append("password", password);
 
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/auth/login", {
+      const res = await fetch(`${API_URL}/api/auth/login`, {
         method: "POST",
         body: formData,
       });
@@ -35,7 +36,7 @@ export default function LoginPage() {
 
       // ✅ Try fetching user info (to get name)
       try {
-        const userRes = await fetch("http://127.0.0.1:8000/api/auth/me", {
+        const userRes = await fetch(`${API_URL}/api/auth/me`, {
           headers: {
             Authorization: `Bearer ${data.access_token}`,
           },

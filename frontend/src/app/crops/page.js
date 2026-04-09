@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useCart } from "../../context/CartContext";
+import { API_URL } from "../../lib/api";
 
 export default function CropsPage() {
   const { addToCart } = useCart();
@@ -18,7 +19,7 @@ export default function CropsPage() {
   useEffect(() => {
     const fetchCrops = async () => {
       try {
-        const res = await fetch("http://127.0.0.1:8000/api/crops/");
+        const res = await fetch(`${API_URL}/api/crops/`);
         if (!res.ok) throw new Error("Failed to fetch crops");
         const data = await res.json();
 
@@ -30,7 +31,7 @@ export default function CropsPage() {
           description: p.description || "High-quality crop from farms.",
           image_url: p.image_url?.startsWith("http")
             ? p.image_url
-            : `http://127.0.0.1:8000${p.image_url || "/uploads/default.jpg"}`,
+            : `${API_URL}${p.image_url || "/uploads/default.jpg"}`,
         }));
 
         setAllCrops(backendCrops);
@@ -48,7 +49,7 @@ export default function CropsPage() {
   useEffect(() => {
     const fetchLiveRates = async () => {
       try {
-        const res = await fetch("http://127.0.0.1:8000/api/live-rates/");
+        const res = await fetch(`${API_URL}/api/live-rates/`);
         const data = await res.json();
         const rates = data.rates || [];
 

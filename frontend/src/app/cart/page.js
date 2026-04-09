@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useCart } from "../../context/CartContext";
+import { API_URL } from "../../lib/api";
 
 export default function CartPage() {
   const { cartItems, removeFromCart, clearCart } = useCart();
@@ -118,7 +119,7 @@ export default function CartPage() {
     };
 
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/orders/create", {
+      const res = await fetch(`${API_URL}/api/orders/create`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(orderPayload),

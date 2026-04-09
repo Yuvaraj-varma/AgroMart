@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useCart } from "../../context/CartContext";
+import { API_URL } from "../../lib/api";
 
 // utility - normalize simple strings same way as backend (close match)
 const normalize = (s = "") =>
@@ -28,7 +29,7 @@ export default function SeedsPage() {
   useEffect(() => {
     const fetchSeeds = async () => {
       try {
-        const res = await fetch("http://127.0.0.1:8000/api/seeds/");
+        const res = await fetch(`${API_URL}/api/seeds/`);
         if (!res.ok) throw new Error("Failed to fetch seeds");
         const data = await res.json();
 
@@ -40,7 +41,7 @@ export default function SeedsPage() {
           description: p.description || "High-quality certified seeds.",
           image_url: p.image_url?.startsWith("http")
             ? p.image_url
-            : `http://127.0.0.1:8000${p.image_url || "/uploads/default.jpg"}`,
+            : `${API_URL}${p.image_url || "/uploads/default.jpg"}`,
         }));
 
         setAllSeeds(backendSeeds);
@@ -57,7 +58,7 @@ export default function SeedsPage() {
   useEffect(() => {
     const fetchLiveRates = async () => {
       try {
-        const res = await fetch("http://127.0.0.1:8000/api/live-rates/latest");
+        const res = await fetch(`${API_URL}/api/live-rates/latest`);
         const data = await res.json();
         const rates = data.seeds || [];
 
