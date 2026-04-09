@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
-from app.models.crop_model import Crop
+from app.db.models.crop_model import Crop
 from app.schemas.crop_schema import CropCreate
+
 
 def create_crop(db: Session, crop: CropCreate, image_url: str = None):
     new_crop = Crop(**crop.model_dump(), image_url=image_url)
@@ -9,11 +10,14 @@ def create_crop(db: Session, crop: CropCreate, image_url: str = None):
     db.refresh(new_crop)
     return new_crop
 
+
 def get_all_crops(db: Session):
     return db.query(Crop).all()
 
+
 def get_crop_by_id(db: Session, crop_id: int):
     return db.query(Crop).filter(Crop.id == crop_id).first()
+
 
 def update_crop(db: Session, crop_id: int, data: CropCreate, image_url: str = None):
     crop = get_crop_by_id(db, crop_id)
@@ -26,6 +30,7 @@ def update_crop(db: Session, crop_id: int, data: CropCreate, image_url: str = No
     db.commit()
     db.refresh(crop)
     return crop
+
 
 def delete_crop(db: Session, crop_id: int):
     crop = get_crop_by_id(db, crop_id)
