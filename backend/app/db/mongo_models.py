@@ -93,6 +93,23 @@ price_history.create_index([("date", DESCENDING)])
 
 
 # ==========================================================
+# CALLABLE FROM SESSION — setup_indexes()
+# ==========================================================
+
+def setup_indexes():
+    """Called by mongo_session.create_collections() on startup."""
+    rates.create_index([("date", DESCENDING)], unique=True)
+    rates.create_index([("fetched_at", DESCENDING)])
+
+    orders.create_index([("order_id", ASCENDING)], unique=True)
+    orders.create_index([("created_at", DESCENDING)])
+    orders.create_index([("status", ASCENDING)])
+
+    price_history.create_index([("commodity_norm", ASCENDING), ("date", DESCENDING)])
+    price_history.create_index([("date", DESCENDING)])
+
+
+# ==========================================================
 # RUN DIRECTLY — creates all collections + indexes
 # ==========================================================
 

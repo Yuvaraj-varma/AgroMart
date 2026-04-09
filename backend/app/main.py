@@ -3,8 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 import os
 
-# ✅ Local imports
-from app.database import Base, engine
+from app.db.postgres_session import create_tables
+from app.db.mongo_session import create_collections
 from app.routers import (
     seed_router,
     fertilizer_router,
@@ -12,11 +12,12 @@ from app.routers import (
     auth_router,
     product_router,
     live_rates_router,
-    order_router,   # ✅ Keep this
+    order_router,
 )
 
-# ✅ Create all DB tables (PostgreSQL)
-Base.metadata.create_all(bind=engine)
+# ✅ Create all DB tables on startup
+create_tables()
+create_collections()
 
 # ✅ Initialize FastAPI
 app = FastAPI(title="🌾 AgroMart API")
