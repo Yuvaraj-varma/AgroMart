@@ -8,7 +8,7 @@ if not DATABASE_URL:
         "No PostgreSQL configuration found. Set DATABASE_URL in the .env file."
     )
 
-engine = create_engine(DATABASE_URL, echo=True)
+engine = create_engine(DATABASE_URL, echo=False)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 

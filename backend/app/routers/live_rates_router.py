@@ -1,29 +1,14 @@
 from fastapi import APIRouter
-from pymongo import MongoClient
 import requests
 from datetime import datetime
-import os
-from dotenv import load_dotenv
 from apscheduler.schedulers.background import BackgroundScheduler
 import pytz
 import re
 
-# ✅ Load environment variables
-load_dotenv()
+from app.core.config import settings
+from app.db.mongo_session import rates_collection as collection
 
 router = APIRouter()
-
-# ✅ MongoDB connection
-MONGODB_URL = os.getenv("MONGODB_URL", "mongodb://localhost:27017/")
-client = MongoClient(MONGODB_URL)
-db = client["liveRatesDB"]
-collection = db["rates"]
-
-# ✅ Agmarknet API details
-AGMARKNET_API_KEY = os.getenv("AGMARKNET_API_KEY")
-AGMARKNET_URL = "https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070"
-
-# ✅ India timezone
 IST = pytz.timezone("Asia/Kolkata")
 
 
@@ -89,13 +74,13 @@ def fetch_and_store_agmarknet_data():
     """Fetch daily Agmarknet data and store both crop and seed live rates."""
     try:
         params = {
-            "api-key": AGMARKNET_API_KEY,
+            "api-key": settings.AGMARKNET_API_KEY,
             "format": "json",
             "limit": 1000,
         }
 
         print("🌾 Fetching latest Agmarknet data...")
-        response = requests.get(AGMARKNET_URL, params=params, timeout=25)
+        response = requests.get(settings.AGMARKNET_URL, params=params, timeout=25)
 
         if response.status_code != 200:
             print(f"❌ API Error {response.status_code}: {response.text[:200]}")

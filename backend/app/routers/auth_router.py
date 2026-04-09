@@ -3,9 +3,10 @@ from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordRequestForm
 from datetime import timedelta
 
-from app.database import get_db
-from app.models.user_model import Vendor, Buyer
+from app.db.postgres_session import get_db
+from app.db.models.user_model import Vendor, Buyer
 from app.schemas.user import UserCreate, UserOut, Token
+from app.core.config import settings
 from app.core.security import (
     get_password_hash,
     verify_password,
