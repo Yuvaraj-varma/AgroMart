@@ -1,23 +1,10 @@
-from dotenv import load_dotenv
-import os
+# All settings live in app/core/config.py
+# This file re-exports what db/ modules need
+from app.core.config import settings
 
-load_dotenv()
-
-# PostgreSQL
-DATABASE_URL = os.getenv("DATABASE_URL")
-
-# MongoDB
-MONGODB_URL = os.getenv("MONGODB_URL", "mongodb://localhost:27017/")
-
-# JWT
-SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key")
-ALGORITHM = os.getenv("ALGORITHM", "HS256")
-ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "60"))
-
-# Agmarknet
-AGMARKNET_API_KEY = os.getenv("AGMARKNET_API_KEY")
-AGMARKNET_URL = "https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070"
-
-# Kafka
-KAFKA_BOOTSTRAP = os.getenv("KAFKA_BOOTSTRAP", "localhost:9092")
-KAFKA_ORDER_TOPIC = os.getenv("KAFKA_ORDER_TOPIC", "order-topic")
+DATABASE_URL  = settings.DATABASE_URL
+MONGODB_URL   = settings.MONGODB_URL
+AGMARKNET_API_KEY = settings.AGMARKNET_API_KEY
+AGMARKNET_URL = settings.AGMARKNET_URL
+KAFKA_BOOTSTRAP   = settings.KAFKA_BOOTSTRAP
+KAFKA_ORDER_TOPIC = settings.KAFKA_ORDER_TOPIC
